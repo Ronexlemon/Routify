@@ -1,0 +1,90 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")
+  directUrl = env("DIRECT_URL")
+}
+
+model User {
+  userid     String     @id @default(uuid())
+  phonenumber String     @unique
+  password    String
+  name        String?
+  gigs        Gig[]
+  role        Role       @default(CLIENT)
+  
+  @@map("user")
+}
+
+model Gig {
+  gig_id      String     @id @default(uuid())
+  title       String
+  price       Int
+  user        User       @relation(fields: [userId], references: [userid])
+  userId      String     @unique
+  direction   Direction?
+  reviews     Review[]
+  histories   History[]
+  status      Status     @default(PENDING)
+  @@map("gig")
+}
+
+model Review {
+  id          String     @id @default(uuid())
+  rating      Int
+  comment     String
+  gig         Gig        @relation(fields: [gigId], references: [gig_id])
+  gigId       String     @unique
+  
+  @@map("review")
+}
+
+model History {
+  id          String     @id @default(uuid())
+  gig         Gig        @relation(fields: [gigId], references: [gig_id])
+  gigId       String     @unique
+  
+  date        DateTime
+  price       Int
+  @@map("history")
+}
+
+model Direction {
+  direction_id   String     @id @default(uuid())
+  source         Source?
+  destination    Destination?
+  gig            Gig        @relation(fields: [gigId], references: [gig_id])
+  gigId          String     @unique
+  @@map("direction")
+}
+
+model Source {
+  source_id      String     @id @default(uuid())
+  latitude       String?    
+  direction      Direction  @relation(fields: [directionId], references: [direction_id])
+  directionId    String     @unique
+  @@map("source")
+}
+
+model Destination {
+  id             String     @id @default(uuid())
+  latitude       String?    
+  direction      Direction  @relation(fields: [directionId], references: [direction_id])
+  directionId    String     @unique
+  @@map("destination")
+}
+
+enum Role {
+  CLIENT
+  JOB
+}
+
+enum Status {
+  PENDING
+  ACCEPTED
+  REJECTED
+  COMPLETED
+}
