@@ -1,12 +1,39 @@
 import React, { useState } from 'react';
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
-import { Button } from '@/components/ui/button';
+
+import {
+    AlertDialog,
+    AlertDialogAction,
+    AlertDialogCancel,
+    AlertDialogContent,
+    AlertDialogDescription,
+    AlertDialogFooter,
+    AlertDialogHeader,
+    AlertDialogTitle,
+    AlertDialogTrigger,
+} from "@/components/ui/alert-dialog";
+import { Button } from "@/components/ui/button";
+import { Input } from '../ui/input';
+import { CreateGig } from '@/config/ApiConfig';
+import { useSession } from 'next-auth/react';
 
 const FloatingButtonWithModal: React.FC = () => {
+    const {data:session} = useSession();
     const [isModalOpen, setIsModalOpen] = useState(false);
+    const [title, setTitle] = useState('');
+    const [id, setId] = useState('');
+    const [price, setPrice] = useState('');
 
     const toggleModal = () => {
         setIsModalOpen(!isModalOpen);
+    };
+
+    const handleSubmit = async() => {
+        // Add your submit logic here
+        console.log({ title, id, price });
+        const res = await CreateGig({title:title,price:price,user_id:session?.user.data.userid,source:{latitude:`-1.286389`,longitude:`36.817223`}}) 
+        console.log("the response create is",res)
+        toggleModal();
     };
 
     return (
@@ -20,25 +47,51 @@ const FloatingButtonWithModal: React.FC = () => {
                 </Button>
             </div>
 
-            {isModalOpen && (
-                <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50">
-                    <div className="bg-white rounded-lg p-4 shadow-lg max-w-md w-full">
-                        <Card>
-                            <CardHeader className="p-2">
-                                <CardTitle>Order Item</CardTitle>
-                            </CardHeader>
-                            <CardContent className="space-y-1 p-2">
-                                <p>What would you like to order?</p>
-                                {/* Add your form inputs here */}
-                            </CardContent>
-                            <CardFooter className="flex justify-end p-2">
-                                <Button onClick={toggleModal} className="mr-2">Cancel</Button>
-                                <Button>Order</Button>
-                            </CardFooter>
-                        </Card>
-                    </div>
-                </div>
-            )}
+            <AlertDialog open={isModalOpen}>
+                <AlertDialogContent>
+                    <AlertDialogHeader>
+                        <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
+                        <AlertDialogDescription>
+                            This action cannot be undone. This will permanently delete your account
+                            and remove your data from our servers.
+                        </AlertDialogDescription>
+                        <div className="flex flex-col  mb-10 gap-4">
+                            <Input
+                                type="text"
+                                placeholder="Title"
+                                className="w-full"
+                                value={title}
+                                onChange={(e) => setTitle(e.target.value)}
+                            />
+                            {/* <Input
+                                type="text"
+                                placeholder="ID"
+                                className="w-full"
+                                value={id}
+                                onChange={(e) => setId(e.target.value)}
+                            /> */}
+                            <Input
+                                type="text"
+                                placeholder="Price"
+                                className="w-full"
+                                value={price}
+                                onChange={(e) => setPrice(e.target.value)}
+                            />
+                            
+                        </div>
+                    </AlertDialogHeader>
+                    <AlertDialogFooter >
+                        <div className='flex justify-between items-center w-full'>
+                            
+                        <Button onClick={toggleModal}>Cancel</Button>
+                        <Button onClick={handleSubmit}>Submit</Button>
+                        
+
+                        </div>
+                       
+                    </AlertDialogFooter>
+                </AlertDialogContent>
+            </AlertDialog>
         </div>
     );
 };

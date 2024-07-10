@@ -24,7 +24,7 @@ model Gig {
   title       String
   price       Int
   user        User       @relation(fields: [userId], references: [userid])
-  userId      String     @unique
+  userId      String     
   direction   Direction?
   reviews     Review[]
   histories   History[]
@@ -37,7 +37,7 @@ model Review {
   rating      Int
   comment     String
   gig         Gig        @relation(fields: [gigId], references: [gig_id])
-  gigId       String     @unique
+  gigId       String     
   
   @@map("review")
 }
@@ -45,7 +45,7 @@ model Review {
 model History {
   id          String     @id @default(uuid())
   gig         Gig        @relation(fields: [gigId], references: [gig_id])
-  gigId       String     @unique
+  gigId       String     
   
   date        DateTime
   price       Int
@@ -63,7 +63,8 @@ model Direction {
 
 model Source {
   source_id      String     @id @default(uuid())
-  latitude       String?    
+  latitude       Float? 
+  longitude       Float?   
   direction      Direction  @relation(fields: [directionId], references: [direction_id])
   directionId    String     @unique
   @@map("source")
@@ -71,7 +72,8 @@ model Source {
 
 model Destination {
   id             String     @id @default(uuid())
-  latitude       String?    
+  latitude       Float?   
+   longitude       Float?  
   direction      Direction  @relation(fields: [directionId], references: [direction_id])
   directionId    String     @unique
   @@map("destination")

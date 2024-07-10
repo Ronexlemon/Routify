@@ -34,13 +34,14 @@ export type Transaction ={
   token:any
 }
 
-export type ProductData = {
-    product_name: string;
-    product_description:string;
-    amount:string;
-    product_image:string;
-    seller_phonenumber:string,
-    token:string
+export type GigData = {
+    user_id: string | undefined;
+    title:string;
+    price:string;  
+    source?: {
+      latitude: number | null | undefined |string;
+      longitude: number | null | undefined |string;
+    }; 
   };
   
 //   type ApiResponse = {
@@ -63,20 +64,20 @@ export const SignInUserr = async (userDetails: dataSignInUser) => {
   };
   // {product_name,product_description,amount,product_image}
 
-  export const CreateProduct = async (transactionDetails: ProductData) => {
+  export const CreateGig = async (transactionDetails: GigData) => {
+    console.log("directions hjgrhjgjhgjhreghjerghrgh",transactionDetails)
     try {
-      const res = await fetch("api/create", {
+      const res = await fetch("api/gigs/create", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-           product_name:transactionDetails.product_name,
-           amount: transactionDetails.amount,
-           product_description:transactionDetails.product_description,
-           product_image:transactionDetails.product_image,
-           seller_phonenumber:transactionDetails.seller_phonenumber,
-           token:transactionDetails.token
+           user_id:transactionDetails.user_id,
+           price: transactionDetails.price,
+           title:transactionDetails.title,
+           source:transactionDetails.source
+           
         }),
       });
       return res;
