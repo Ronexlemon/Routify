@@ -118,7 +118,7 @@ const MapNavigation: React.FC = () => {
         <div className="bg-black w-screen h-screen flex justify-center items-center">
             <div className="w-full h-full flex flex-col justify-center items-center">
                 <h1>Delivery App Map</h1>
-                <div className="flex flex-col justify-center items-center w-full">
+                <div className="flex flex-col justify-center  w-full">
                     <Card className="w-full  max-w-md">
                         <CardHeader className="p-2">
                             <CardTitle>{gigInfo?.title}</CardTitle>

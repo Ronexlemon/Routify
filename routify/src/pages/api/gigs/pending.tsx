@@ -14,11 +14,17 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse<
 
   try {
     const pendingGigs = await prisma.gig.findMany({
-      where: {
-        status: 'PENDING',
-      },
-      // Optionally include other fields or relations as needed
-    });
+        where: {
+          status: 'PENDING',
+        },
+        include: {
+          direction: {
+            include: {
+              source: true,
+            },
+          },
+        },
+      });
 
     return res.status(200).json({ success: true, data: pendingGigs });
   } catch (error) {

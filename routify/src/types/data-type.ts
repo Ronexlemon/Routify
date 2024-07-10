@@ -64,3 +64,26 @@ export interface Destination {
   longitude?: number | null;
   directionId?: string;
 }
+
+
+export interface GigData {
+  
+    direction: {
+      direction_id: string;
+      gigId: string;
+      source: {
+        directionId: string;
+        latitude: number;
+        longitude: number;
+        source_id: string;
+      };
+    };
+    gig_id: string;
+    price: number;
+    status: string;
+    title: string;
+    userId: string;
+
+  
+  
+}

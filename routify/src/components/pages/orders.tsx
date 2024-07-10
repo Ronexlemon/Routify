@@ -13,12 +13,51 @@ import { Button } from "../ui/button";
 import { useRouter } from "next/navigation";
 import { Gigs } from "@/helpers/data";
 import { Gig } from "@/types/data-type";
+import { useQuery } from "@tanstack/react-query";
 
+import { AllPendingGigs } from "@/config/ApiConfig";
+import { GigData } from "@/types/data-type";
 export default function MarketPlace() {
   const router = useRouter();
+
+  const getTotalTransaction = async () => {
+    try{
+        const res = await fetch(`api/gigs/pending`, {
+            method: "GET",
+            headers: {
+              "Content-Type": "application/json",
+            //   Authorization: `Bearer ${token}`,
+            },
+            credentials: "omit",
+          });
+          if (!res.ok) {
+            throw new Error("Failed to fetch properties");
+          }
+          return await res.json();
+
+    }catch(error){
+        console.log("can't load data",error)
+
+    }
+    
+  };
+
   
-  const handleTakeClick = (gig: Gig) => {
+  // const { data: pendingGigs, isLoading, isError } = useQuery<Gig[], Error>({
+  //   queryFn: AllPendingGigs,
+  //   queryKey: ["pendingGigs"], // Unique key for this query
+  // });
+  const { data, error:isError, isLoading } = useQuery<GigData[]>({
+    queryKey: ["marketing"],
+    queryFn: getTotalTransaction,
+    // enabled: !!token,
+  });
+
+  console.log("data data", data);
+  
+  const handleTakeClick = (gig: GigData) => {
     const { title, gig_id, price, direction } = gig;
+    
 
     // Prepare data object to store in local storage
     const dataToStore = {
@@ -38,6 +77,13 @@ export default function MarketPlace() {
     
     router.push("/navigation");
 };
+if (isLoading) {
+  return <div>Loading...</div>;
+}
+
+if (isError) {
+  return <div>Error fetching data</div>;
+}
 
   return (
     <main className="w-screen h-screen">
@@ -57,7 +103,7 @@ export default function MarketPlace() {
           </div>
 
           <div className="w-full p-4 mt-16">
-            {Gigs?.map((item: Gig, index: number) => (
+            {data?.data?.map((item: GigData, index: number) => (
               <Card key={item.gig_id} className="flex items-center gap-4 mb-4 p-2">
                 <Image
                   className="rounded-full"

@@ -2,6 +2,7 @@
 import { signIn } from "next-auth/react";
 import { transactionType } from "viem";
 import { Data } from "@/pages/api/user/signup";
+import axios from 'axios'
 export type ProductList = {
   
     product_id:string;
@@ -104,6 +105,21 @@ export const SignInUserr = async (userDetails: dataSignInUser) => {
       return res;
     } catch (error) {
       console.log("failed to register", error);
+    }
+  };
+
+
+  export const AllPendingGigs = async () => {
+    try {
+      const res = await axios.get("/api/gigs/pending", {
+        headers: {
+          "Content-Type": "application/json",
+        },        
+      });
+      return res.data; // Assuming your API response structure is { success: boolean, data: any }
+    } catch (error) {
+      console.error("Failed to fetch pending gigs:", error);
+      throw new Error("Failed to fetch pending gigs");
     }
   };
 
