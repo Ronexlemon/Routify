@@ -12,6 +12,7 @@ import {
   } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Direction, Gig } from '@/types/data-type';
+import { GigNavigationData } from '@/types/data-type';
 
 const MapNavigation: React.FC = () => {
     const router = useRouter();
@@ -23,7 +24,7 @@ const MapNavigation: React.FC = () => {
     const [destinationCoords, setDestinationCoords] = useState<google.maps.LatLngLiteral | undefined>(undefined);
     const [mapCenter, setMapCenter] = useState<google.maps.LatLngLiteral>();
     const [userLocation, setUserLocation] = useState<google.maps.LatLngLiteral | null>(null);
-    const [gigInfo, setGigInfo] = useState<Gig | null>(null);
+    const [gigInfo, setGigInfo] = useState<GigNavigationData | null>(null);
     const [showMap, setShowMap] = useState<boolean>(false); // State to track if map should be shown
 
     // Function to fetch coordinates from Google Geocoding API
@@ -96,14 +97,14 @@ const MapNavigation: React.FC = () => {
         // Retrieve and set gigInfo from localStorage on component mount
         const dataString = localStorage.getItem('navigationData');
         if (dataString) {
-            const storedGigInfo: Gig = JSON.parse(dataString);
+            const storedGigInfo: GigNavigationData = JSON.parse(dataString);
             setGigInfo(storedGigInfo);
 
             // Example: Set destination coordinates from direction object
-            if (storedGigInfo.direction && storedGigInfo.direction.destination && storedGigInfo.direction.destination.latitude && storedGigInfo.direction.destination.longitude) {
+            if (storedGigInfo.direction  && storedGigInfo.direction.latitude && storedGigInfo.direction.longitude) {
                 setDestinationCoords({
-                    lat: storedGigInfo.direction.destination.latitude,
-                    lng: storedGigInfo.direction.destination.longitude
+                    lat: storedGigInfo.direction.latitude,
+                    lng: storedGigInfo.direction.longitude
                 });
                 setShowMap(true); // Show map if destination coordinates exist
             } else {

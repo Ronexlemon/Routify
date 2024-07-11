@@ -14,10 +14,45 @@ import {
 import { Button } from "../ui/button";
 import { useRouter } from "next/navigation";
 import { Gigs } from "@/helpers/data";
-import { Gig } from "@/types/data-type";
+import { Gig, GigData } from "@/types/data-type";
+import { useQuery } from "@tanstack/react-query";
 
 const Account: React.FC = () => {
     const router = useRouter();
+    const getTotalTransaction = async () => {
+      try{
+          const res = await fetch(`api/gigs/userPending`, {
+              method: "GET",
+              headers: {
+                "Content-Type": "application/json",
+              //   Authorization: `Bearer ${token}`,
+              },
+              credentials: "omit",
+            });
+            if (!res.ok) {
+              throw new Error("Failed to fetch properties");
+            }
+            return await res.json();
+  
+      }catch(error){
+          console.log("can't load data",error)
+  
+      }
+      
+    };
+  
+    
+    // const { data: pendingGigs, isLoading, isError } = useQuery<Gig[], Error>({
+    //   queryFn: AllPendingGigs,
+    //   queryKey: ["pendingGigs"], // Unique key for this query
+    // });
+    const { data, error:isError, isLoading } = useQuery<any>({
+      queryKey: ["marketing"],
+      queryFn: getTotalTransaction,
+      // enabled: !!token,
+    });
+  
+    console.log("data data", data);
     return (
         <div className="relative w-full min-h-screen bg-gray-100">
             <Sidebar />
@@ -37,7 +72,7 @@ const Account: React.FC = () => {
           </div> */}
 
           <div className="w-full p-4 mt-16">
-            {Gigs?.map((item: Gig, index: number) => (
+            {data?.data?.map((item: Gig, index: number) => (
               <Card key={item.gig_id} className="flex items-center gap-4 mb-4 p-2">
                 <Image
                   className="rounded-full"
@@ -56,10 +91,7 @@ const Account: React.FC = () => {
                         <span>Description:</span>
                         <span>{item.title}</span>
                       </div>
-                      <div className="flex justify-between items-center">
-                        <span>ID:</span>
-                        <span>{item.gig_id}</span>
-                      </div>
+                     
                       <div className="flex justify-between items-center">
                         <span>Price:</span>
                         <span>{item.price}</span>
@@ -67,7 +99,7 @@ const Account: React.FC = () => {
                     </div>
                   </CardContent>
                   <CardFooter className="flex justify-between items-center p-2">
-                    <Button >TAKE</Button>
+                    
                     <Badge variant="outline">{item.status}</Badge>
                   </CardFooter>
                 </div>

@@ -1,3 +1,5 @@
+import { SoaRecord } from "dns";
+
 export enum Role {
   CLIENT = 'CLIENT',
   JOB = 'JOB',
@@ -17,6 +19,20 @@ export interface User {
   name?: string | null;
   gigs?: Gig[];
   role?: Role;
+}
+
+export interface GigNavigationData{
+  gig_id: string;
+  title: string;
+  price: number;
+  userId: string;
+  direction: source
+
+}
+
+interface source{
+  latitude:number,
+  longitude:number
 }
 
 export interface Gig {
@@ -66,7 +82,7 @@ export interface Destination {
 }
 
 
-export interface GigData {
+export interface GigData {  
   
     direction: {
       direction_id: string;

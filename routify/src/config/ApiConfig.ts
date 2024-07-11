@@ -123,6 +123,20 @@ export const SignInUserr = async (userDetails: dataSignInUser) => {
     }
   };
 
+  export const AllUserPendingGigs = async () => {
+    try {
+      const res = await axios.get("/api/gigs/userPending", {
+        headers: {
+          "Content-Type": "application/json",
+        },        
+      });
+      return res.data; // Assuming your API response structure is { success: boolean, data: any }
+    } catch (error) {
+      console.error("Failed to fetch pending gigs:", error);
+      throw new Error("Failed to fetch pending gigs");
+    }
+  };
+
 
 
   //

@@ -47,7 +47,7 @@ export default function MarketPlace() {
   //   queryFn: AllPendingGigs,
   //   queryKey: ["pendingGigs"], // Unique key for this query
   // });
-  const { data, error:isError, isLoading } = useQuery<GigData[]>({
+  const { data, error:isError, isLoading } = useQuery<any>({
     queryKey: ["marketing"],
     queryFn: getTotalTransaction,
     // enabled: !!token,
@@ -57,6 +57,7 @@ export default function MarketPlace() {
   
   const handleTakeClick = (gig: GigData) => {
     const { title, gig_id, price, direction } = gig;
+    console.log("direction direct",direction.source.latitude)
     
 
     // Prepare data object to store in local storage
@@ -64,7 +65,7 @@ export default function MarketPlace() {
         title: title,
         gig_id: gig_id,
         price: price,
-        direction: direction,
+        direction: direction.source,
     };
 
     // Convert data object to string
