@@ -63,6 +63,7 @@ const MapNavigation: React.FC = () => {
     // Function to handle cancelling
     const handleCancel = () => {
         // Implement cancellation logic here
+        router.push("/market")
         console.log('Cancelled');
     };
 

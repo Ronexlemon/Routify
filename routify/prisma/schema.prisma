@@ -23,6 +23,7 @@ model Gig {
   gig_id      String     @id @default(uuid())
   title       String
   price       Int
+  duration    Int?      @default(0)
   user        User       @relation(fields: [userId], references: [userid])
   userId      String     
   direction   Direction?

@@ -39,6 +39,7 @@ export type GigData = {
     user_id: string | undefined;
     title:string;
     price:string;  
+    duration:number;
     source?: {
       latitude: number | null | undefined |string;
       longitude: number | null | undefined |string;
@@ -77,7 +78,8 @@ export const SignInUserr = async (userDetails: dataSignInUser) => {
            user_id:transactionDetails.user_id,
            price: transactionDetails.price,
            title:transactionDetails.title,
-           source:transactionDetails.source
+           source:transactionDetails.source,
+           duration:transactionDetails.duration
            
         }),
       });

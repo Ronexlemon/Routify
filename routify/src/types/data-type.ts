@@ -39,6 +39,7 @@ export interface Gig {
   gig_id: string;
   title: string;
   price: number;
+  duration?:number;
   userId: string;
   status: Status;
   direction?: Direction | null;
@@ -96,6 +97,7 @@ export interface GigData {
     };
     gig_id: string;
     price: number;
+    duration:number;
     status: string;
     title: string;
     userId: string;

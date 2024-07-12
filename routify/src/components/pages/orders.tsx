@@ -17,6 +17,7 @@ import { useQuery } from "@tanstack/react-query";
 
 import { AllPendingGigs } from "@/config/ApiConfig";
 import { GigData } from "@/types/data-type";
+import Sidebar from "../sidebar";
 export default function MarketPlace() {
   const router = useRouter();
 
@@ -48,7 +49,7 @@ export default function MarketPlace() {
   //   queryKey: ["pendingGigs"], // Unique key for this query
   // });
   const { data, error:isError, isLoading } = useQuery<any>({
-    queryKey: ["marketing"],
+    queryKey: ["marketingg"],
     queryFn: getTotalTransaction,
     // enabled: !!token,
   });
@@ -88,21 +89,10 @@ if (isError) {
 
   return (
     <main className="w-screen h-screen">
+       <Sidebar />
       <div className="h-full w-full">
         <ScrollArea className="h-full w-full relative">
-          <div className="flex flex-col absolute bottom-0 right-4 left-4">
-            <div className="flex justify-between items-center w-full h-16">
-              <Button onClick={() => router.push("/")}>Account</Button>
-              <Button className="bg-gray-300" onClick={() => router.push("/market")}>
-                Market
-              </Button>
-              <Button onClick={() => router.push("/delivery")}>Delivery</Button>
-              <Button onClick={() => router.push("/sold")}>Sold</Button>
-              <Button onClick={() => router.push("/unlisted")}>Unlist</Button>
-              <Button onClick={() => router.push("/send")}>Send</Button>
-            </div>
-          </div>
-
+          
           <div className="w-full p-4 mt-16">
             {data?.data?.map((item: GigData, index: number) => (
               <Card key={item.gig_id} className="flex items-center gap-4 mb-4 p-2">
@@ -124,8 +114,8 @@ if (isError) {
                         <span>{item.title}</span>
                       </div>
                       <div className="flex justify-between items-center">
-                        <span>ID:</span>
-                        <span>{item.gig_id}</span>
+                        <span>Duration:</span>
+                        <span>{item.duration}</span>
                       </div>
                       <div className="flex justify-between items-center">
                         <span>Price:</span>

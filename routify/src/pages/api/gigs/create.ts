@@ -5,6 +5,7 @@ export type Data = {
   user_id: string;
   title: string;
   price: number;
+  duration:number;
   source: {
     latitude: string | null | undefined ;
     longitude: string | null | undefined ;
@@ -29,7 +30,7 @@ export default async function handler(
     return res.status(405).json({ success: false, message: "Method Not Allowed" });
   }
 
-  const { user_id, title, price, source }: Data = req.body;
+  const { user_id, title, price, source,duration }: Data = req.body;
 
   if (!source) {
 
@@ -47,6 +48,7 @@ export default async function handler(
       data: {
         title,
         price: parseInt(price.toString(), 10),
+        duration: duration,
         user: {
           connect: {
             userid: user_id,

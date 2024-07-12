@@ -1,5 +1,14 @@
 import React, { useState } from 'react';
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
+import {
+    DropdownMenu,
+    DropdownMenuContent,
+    DropdownMenuItem,
+    DropdownMenuLabel,
+    DropdownMenuSeparator,
+    DropdownMenuTrigger,
+  } from "@/components/ui/dropdown-menu";
+  
 
 import {
     AlertDialog,
@@ -23,6 +32,7 @@ const FloatingButtonWithModal: React.FC = () => {
     const [title, setTitle] = useState('');
     const [id, setId] = useState('');
     const [price, setPrice] = useState('');
+    const [duration, setDuration] = useState(1); // Default duration
 
     const toggleModal = () => {
         setIsModalOpen(!isModalOpen);
@@ -30,9 +40,9 @@ const FloatingButtonWithModal: React.FC = () => {
 
     const handleSubmit = async() => {
         // Add your submit logic here
-        console.log({ title, id, price });
-        const res = await CreateGig({title:title,price:price,user_id:session?.user.data.userid,source:{latitude:`-1.286389`,longitude:`36.817223`}}) 
-        console.log("the response create is",res)
+        console.log({ title, id, price, duration });
+        const res = await CreateGig({title:title, price:price, duration:duration, user_id:session?.user.data.userid, source:{latitude:`-1.286389`,longitude:`36.817223`}});
+        console.log("the response create is",res);
         toggleModal();
     };
 
@@ -50,12 +60,8 @@ const FloatingButtonWithModal: React.FC = () => {
             <AlertDialog open={isModalOpen}>
                 <AlertDialogContent>
                     <AlertDialogHeader>
-                        <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
-                        <AlertDialogDescription>
-                            This action cannot be undone. This will permanently delete your account
-                            and remove your data from our servers.
-                        </AlertDialogDescription>
-                        <div className="flex flex-col  mb-10 gap-4">
+                        <AlertDialogTitle>Create a new gig</AlertDialogTitle>
+                        <div className="flex flex-col mb-10 gap-4">
                             <Input
                                 type="text"
                                 placeholder="Title"
@@ -63,13 +69,6 @@ const FloatingButtonWithModal: React.FC = () => {
                                 value={title}
                                 onChange={(e) => setTitle(e.target.value)}
                             />
-                            {/* <Input
-                                type="text"
-                                placeholder="ID"
-                                className="w-full"
-                                value={id}
-                                onChange={(e) => setId(e.target.value)}
-                            /> */}
                             <Input
                                 type="text"
                                 placeholder="Price"
@@ -77,18 +76,26 @@ const FloatingButtonWithModal: React.FC = () => {
                                 value={price}
                                 onChange={(e) => setPrice(e.target.value)}
                             />
-                            
+                            <DropdownMenu>
+                                <DropdownMenuTrigger>
+                                    <Button className="w-full">{`Duration: ${duration} hour${duration > 1 ? 's' : ''}`}</Button>
+                                </DropdownMenuTrigger>
+                                <DropdownMenuContent>
+                                    <DropdownMenuLabel>Select Duration</DropdownMenuLabel>
+                                    <DropdownMenuSeparator />
+                                    <DropdownMenuItem onClick={() => setDuration(1)}>1 hour</DropdownMenuItem>
+                                    <DropdownMenuItem onClick={() => setDuration(2)}>2-3 hours</DropdownMenuItem>
+                                    <DropdownMenuItem onClick={() => setDuration(3)}>3-4 hours</DropdownMenuItem>
+                                    <DropdownMenuItem onClick={() => setDuration(4)}>4+ hours</DropdownMenuItem>
+                                </DropdownMenuContent>
+                            </DropdownMenu>
                         </div>
                     </AlertDialogHeader>
-                    <AlertDialogFooter >
+                    <AlertDialogFooter>
                         <div className='flex justify-between items-center w-full'>
-                            
-                        <Button onClick={toggleModal}>Cancel</Button>
-                        <Button onClick={handleSubmit}>Submit</Button>
-                        
-
+                            <Button onClick={toggleModal}>Cancel</Button>
+                            <Button onClick={handleSubmit}>Submit</Button>
                         </div>
-                       
                     </AlertDialogFooter>
                 </AlertDialogContent>
             </AlertDialog>
