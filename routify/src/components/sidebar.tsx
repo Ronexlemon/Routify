@@ -29,6 +29,7 @@ const Sidebar: React.FC = () => {
     const [isOpen, setIsOpen] = useState(false);
     const sidebarRef = useRef<HTMLDivElement>(null);
     const [draweropen,setDrawerOpen] = useState(false)
+    const [settingdraweropen,setsettingDrawerOpen] = useState<boolean>(false)
 
     const toggleSidebar = () => {
         setIsOpen(!isOpen);
@@ -53,13 +54,61 @@ const Sidebar: React.FC = () => {
 
     return (
         <div className='w-full  '>
+            <div className=' '>
+            <Drawer   open={settingdraweropen}>
+  
+  <DrawerContent className='w-full flex justify-center items-center h-screen '>
+    <DrawerHeader>
+      <DrawerTitle>Link Your Account
+      </DrawerTitle>
+     
+    </DrawerHeader>
+    <Card className="w-[400px] bg-black ">
+      <CardHeader>
+       
+       
+      </CardHeader>
+      <CardContent>
+        
+          <div className="grid w-full items-center gap-4">
+            <div className="flex flex-col space-y-1.5">
+              <Label htmlFor="name " className='text-gray-100'>Phone Number</Label>
+              <Input  placeholder="254701707772" />
+            </div>
+            
+            
+          </div>
+          
+        
+      </CardContent>
+      
+      <CardFooter className="flex justify-between">
+        <Button variant="outline" className='bg-green-300 w-full'>LINK</Button>
+        
+      </CardFooter>
+    </Card>
+    <div>
+            <Label className='text-red-500'>{`LINKED TO 254701707771`}</Label>
+          </div>
+    
+    <DrawerFooter>
+      
+      
+        <Button onClick={()=> setsettingDrawerOpen(false)} className='w-full'>Cancel</Button>
+      
+    </DrawerFooter>
+  </DrawerContent>
+</Drawer>
+
+            </div>
 
 <div className=' '>
             <Drawer   open={draweropen}>
   
   <DrawerContent className='w-full flex justify-center items-center h-screen '>
     <DrawerHeader>
-      <DrawerTitle>Make Someone Smile ☺️</DrawerTitle>
+      <DrawerTitle>Make Someone Smile 😊
+      </DrawerTitle>
      
     </DrawerHeader>
     <Card className="w-[400px] bg-black ">
@@ -89,10 +138,10 @@ const Sidebar: React.FC = () => {
     </Card>
     
     <DrawerFooter>
-      <Button>Submit</Button>
-      <DrawerClose>
-        <Button onClick={()=> setDrawerOpen(false)} variant="outline">Cancel</Button>
-      </DrawerClose>
+      
+      
+        <Button onClick={()=> setDrawerOpen(false)} className='w-full'>Cancel</Button>
+      
     </DrawerFooter>
   </DrawerContent>
 </Drawer>
@@ -113,7 +162,7 @@ const Sidebar: React.FC = () => {
                         <Button onClick={()=>router.push("/account")} className="w-full">Accounts</Button>
                     </li>
                     <li>
-                        <Button onClick={()=>router.push("/setting")} className="w-full">Settings</Button>
+                        <Button onClick={()=> setsettingDrawerOpen(true)} className="w-full">Settings</Button>
                     </li>
                     <li>
                         <Button onClick={()=>router.push("/market")} className="w-full">Orders</Button>
